@@ -1,0 +1,64 @@
+# Example query.txt for querying processed face data
+# All fields are optional. If a field is omitted, it will not be used as a filter.
+# If this file is completely empty → the query returns ALL faces in the dataset.
+
+# ============================
+# Face Detection Quality Filters
+# ============================
+
+# Minimum face detection confidence (from MTCNN stage)
+# If not specified, no minimum confidence will be applied.
+
+min_face_conf = 0.98
+
+# Minimum face width in pixels
+# If not specified, no minimum width will be applied.
+
+min_face_width = 100
+
+# Minimum face height in pixels
+# If not specified, no minimum height will be applied.
+
+min_face_height = 100
+
+# ============================
+# Class-based Filters (ONLY ONE of the two can be used!)
+# ============================
+
+# You must choose either `include_classes_AND` or `include_classes_OR`.
+# If both are populated, the system will throw an error.
+# If both are empty, no include filtering will be applied.
+
+# -------- include_classes_AND --------
+# A list of (class_name, confidence_threshold) tuples.
+# The face must contain *ALL* of these classes with >= confidence threshold.
+# Example:
+# include_classes_AND = [('Eyeglasses', 0.5), ('Hat', 0.3)]
+
+include_classes_AND = [('Eyeglasses', 0.6)]
+
+# -------- include_classes_OR --------
+# A list of (class_name, confidence_threshold) tuples.
+# The face must contain *ANY* of these classes with >= confidence threshold.
+# Example:
+#include_classes_OR = [('Eyeglasses', 0.6), ('Hat', 0.3)]
+
+#include_classes_OR = [('Eyeglasses', 0.5)]
+
+# ============================
+# Exclude Classes with Thresholds
+# ============================
+
+# A list of (class_name, confidence_threshold) tuples.
+# If a face contains any of these classes with conf >= threshold, it will be excluded.
+# Example:
+# exclude_classes_AND = [('Sunglasses', 0.2)]
+
+exclude_classes_AND = [('Sunglasses', 0.2)]
+
+# ============================
+# Notes:
+# - Only ONE of `include_classes_AND` or `include_classes_OR` should be used.
+# - You can safely delete or comment out any of these sections if not needed.
+# - You can leave this file completely empty — in that case, all faces will be returned.
+# - The system will automatically handle missing parameters.

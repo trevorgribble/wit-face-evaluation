@@ -1,0 +1,42 @@
+name: wit-face
+channels:
+  - nvidia
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pandas=2.3.0
+  - matplotlib=3.10.0
+  - pillow=10.2.0
+  - duckdb=1.3.0
+  - opencv=4.7.0
+  - py-opencv=4.7.0
+  - scikit-learn
+  - networkx
+  - ultralytics
+  - facenet-pytorch
+  - ffmpeg
+  - pytorch=2.2.2
+  - torchvision=0.17.2
+  - torchaudio
+  - pytorch-cuda=12.1
+  - pip:
+      - tqdm
+      - fsspec
+      - multiprocess
+      - lz4
+      - safetensors
+      - accelerate
+      - transformers
+      - regex
+      - datasets
+      - facenet-pytorch
+      - ultralytics
+      - aiohttp
+      - aiohappyeyeballs
+      - yarl
+      - dill
+      - propcache
+      - psutil
