@@ -206,11 +206,11 @@ python scripts/visualize_faces.py \
 ## ✅ Example Visualizations
 
 1. Per Assignment Instructions: Only images where the faces (98%+ confidence) are at least 100px*100px in dimension and humans wearing eyesight glasses with 60% confidence AND NOT sunglasses with 20% or more confidence.
-![Example Faces Visualization](example_visualizations/faces_conf098_w100_h100_AND_Eyeglasses_EX_Sunglasses_page_001.png)
+![Example Faces Visualization](examples/faces_conf098_w100_h100_AND_Eyeglasses_EX_Sunglasses_page_001.png)
 2. Images where faces (98%+ confidence) are at least 60px*80px in dimension and humans wearing sunglasses with confidence > 20%.
-![Example Faces Visualization](example_visualizations/faces_conf098_w60_h80_AND_Sunglasses_page_001.png)
-3. Images where faces (99%+ confidence) are at least 150px*150px in dimension.
-![Example Faces Visualization](example_visualizations/faces_conf099_w150_h150_page_001.png)
+![Example Faces Visualization](examples/faces_conf098_w60_h80_AND_Sunglasses_page_001.png)
+1. Images where faces (99%+ confidence) are at least 150px*150px in dimension.
+![Example Faces Visualization](examples/faces_conf099_w150_h150_page_001.png)
 
 ---
 
@@ -261,12 +261,16 @@ The pipeline generates several types of outputs:
 ### 2. Query Results
 - Location: `outputs/`
 - Format: `query_results_[query_parameters]_[timestamp].csv`
-- Examples:
-  - `query_results_conf098_w100_h100_AND_Eyeglasses_20250611_210833.csv`
-  - `query_results_conf098_w100_h100_OR_Eyeglasses_Hat_EX_Sunglasses_20250611_205924.csv`
+- Example Results (click to view):
+  1. Faces ≥100x100px with Eyeglasses (60%+) but NOT Sunglasses (20%+):
+     - [query_results_conf098_w100_h100_AND_Eyeglasses_EX_Sunglasses_20250611_213456.csv](examples/query_results_conf098_w100_h100_AND_Eyeglasses_EX_Sunglasses_20250611_213456.csv)
+  2. Faces ≥60x80px with Sunglasses (20%+):
+     - [query_results_conf098_w60_h80_AND_Sunglasses_20250611_212816.csv](examples/query_results_conf098_w60_h80_AND_Sunglasses_20250611_212816.csv)
+  3. Large faces ≥150x150px with high confidence:
+     - [query_results_conf099_w150_h150_20250612_015100.csv](examples/query_results_conf099_w150_h150_20250612_015100.csv)
 
 ### 3. Visualizations
-- Location: `outputs/`
+- Location: `outputs/visualizations`
 - Format: `faces_[query_parameters]_page_*.png`
 - Contains: Grid layouts of matching faces with attributes
 
@@ -275,14 +279,14 @@ The pipeline generates several types of outputs:
 Common issues and solutions:
 
 ### 1. CUDA/GPU Issues
-- Ensure CUDA toolkit matches PyTorch version
-- Try running on CPU if GPU memory is insufficient
-- Check GPU memory usage with `nvidia-smi`
-- For CUDA version mismatch:
-  ```bash
-  pip uninstall torch
-  pip install torch==2.0.1+cu117 -f https://download.pytorch.org/whl/cu117/torch_stable.html
-  ```
+- If experiencing CUDA errors:
+  1. Check your CUDA version: `nvidia-smi`
+  2. Check PyTorch CUDA version: `python -c "import torch; print(torch.version.cuda)"`
+  3. If they don't match, recreate the environment with matching versions (see GPU Installation steps)
+- If you run out of GPU memory:
+  1. Monitor usage with `nvidia-smi -l 1`
+  2. Reduce batch sizes in the evaluation script
+  3. Or switch to CPU-only mode using environment_CPU.yml
 
 ### 2. Memory Issues
 - Reduce batch size in evaluation script

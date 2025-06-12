@@ -1,0 +1,5 @@
+image_id,image_url,bbox,face_conf,face_width,face_height,face_attributes
+4583,https://upload.wikimedia.org/wikipedia/it/0/01/Fabio_Fazio_1987.jpg,[ 54.9754982   85.38170624 210.28720093 276.48052979],0.9996641874313354,155,191,
+23115,https://upload.wikimedia.org/wikipedia/commons/7/73/Darwin_S._Hall_%28Minnesota_Congressman%29.jpg,[ 21.49332237  55.565979   200.25349426 312.36975098],0.9983856678009033,178,256,
+22644,https://upload.wikimedia.org/wikipedia/commons/f/fc/Kuskokwim_Bay_mask_BM_Am1890_0908_9.jpg,[ 58.82624817 201.26585388 232.07879639 426.36508179],0.9924263954162598,173,225,
+39233,https://upload.wikimedia.org/wikipedia/commons/1/17/Weekblad_Pallieter_-_voorpagina_1924_48_jaakske_pirenne.jpg,[ 72.38321686 101.52381897 229.80349731 313.80429077],0.990372896194458,157,212,
