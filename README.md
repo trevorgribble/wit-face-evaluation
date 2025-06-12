@@ -18,19 +18,25 @@ While the instructions of the assignment were specific to querying for 100x100 f
 
 ```
 wit-face-evaluation/
-├── data/raw/                          # raw parquet input files
-├── data/processed/                    # processed parquet files with face & YOLO detection metadata
-├── models/                            # model weights
-├── outputs/                           # CSV query output
-├── outputs/visualizations/            # face visualization PNGs
-├── evaluate_image_dataset.py          # Evaluate Faces Code
-├── query.txt                          # Dynamic query creator
-├── query_evaluated_image_dataset.py   # Query processed parquets
-├── visualize_faces.py                 # Output Visualization Assist Function
-├── environment_CPU.yml               # CPU-only environment file
-├── environment_GPU.yml               # GPU-enabled environment file
-├── README.md
-└── report.md
+├── data/                             # Dataset directories
+│   ├── raw/                          # Raw parquet input files
+│   └── processed/                    # Processed parquet with face & YOLO detection
+├── examples/                         # Example outputs and visualizations
+│   ├── *.png                        # Example face visualization grids
+│   └── *.csv                        # Example query results
+├── models/                          # Model weights (YOLOv8x)
+├── outputs/                         # Query results directory
+│   └── visualizations/             # Generated face visualization grids
+├── src/                            # Source code modules
+├── train/                          # Training scripts and utilities
+├── evaluate_image_dataset.py       # Face detection and analysis script
+├── query_evaluated_image_dataset.py # Query processor
+├── query.txt                       # Query configuration file
+├── visualize_faces.py              # Visualization utilities
+├── environment_CPU.yml             # CPU-only environment
+├── environment_GPU.yml             # GPU-enabled environment
+├── README.md                       # Main documentation
+└── report.md                       # Project approach and findings
 ```
 
 ---
