@@ -53,24 +53,17 @@ System Requirements:
 
 Required System Packages (Ubuntu/Debian):
 
-1. First, check which packages need to be installed:
+Install the following packages required for OpenCV and image processing:
 ```bash
-# Create a list of missing packages
-missing_packages=""
-for pkg in libgl1 libglib2.0-0 libsm6 libxext6 libxrender-dev libpng-dev libjpeg-dev; do
-    if ! dpkg -l | grep -q "^ii  $pkg "; then
-        missing_packages="$missing_packages $pkg"
-    fi
-done
-
-# If any packages are missing, install them
-if [ ! -z "$missing_packages" ]; then
-    echo "Installing missing packages:$missing_packages"
-    sudo apt-get update
-    sudo apt-get install -y $missing_packages
-else
-    echo "All required system packages are already installed!"
-fi
+sudo apt-get update
+sudo apt-get install -y \
+    libgl1 \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    libpng-dev \
+    libjpeg-dev
 ```
 
 For other operating systems, ensure you have the equivalent system libraries installed.
@@ -82,24 +75,17 @@ Choose the appropriate installation method based on your hardware:
 #### 🖥️ CPU-Only Installation (Default)
 Use this if you don't have a CUDA-capable GPU or want a simpler setup:
 
-1. Check if Miniconda/Anaconda is installed and install if needed:
+1. Install Miniconda (skip if already installed):
 ```bash
-# Check if conda is available
-if ! command -v conda &> /dev/null; then
-    echo "Conda not found. Installing Miniconda..."
-    # Download Miniconda installer
-    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
-    # Install Miniconda
-    bash ~/miniconda.sh -b -p $HOME/miniconda
-    # Initialize conda
-    source $HOME/miniconda/bin/activate
-    # Update conda
-    conda update -n base -c defaults conda -y
-else
-    echo "Conda is already installed!"
-    # Optional: Update existing conda
-    conda update -n base -c defaults conda -y
-fi
+# Download and install Miniconda
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
+bash ~/miniconda.sh -b -p $HOME/miniconda
+
+# Initialize conda in your shell
+source $HOME/miniconda/bin/activate
+
+# Update conda to latest version
+conda update -n base -c defaults conda -y
 
 2. Clone the repository:
 ```bash
