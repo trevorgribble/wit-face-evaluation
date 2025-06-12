@@ -100,6 +100,38 @@ def build_query(config, debug):
     query_classes = sorted(list(all_classes))
 
     # Build SQL
+    # If no class filters are active, use simpler query without attribute processing
+    if not any([config['include_classes_AND'], config['include_classes_OR'], config['exclude_classes_AND']]):
+        sql_body = """
+        WITH faces_exploded AS (
+            SELECT
+                row_number() OVER () - 1 AS image_id,
+                image_url,
+                UNNEST(faces) AS face
+            FROM images
+            WHERE faces IS NOT NULL
+        )
+        SELECT DISTINCT
+            image_id,
+            image_url,
+            face.bbox AS bbox,
+            face.confidence AS face_conf,
+            face.width AS face_width,
+            face.height AS face_height,
+            NULL AS face_attributes
+        FROM faces_exploded
+        WHERE TRUE
+        """
+        if config['min_face_conf'] is not None:
+            sql_body += f"\n    AND face.confidence >= {config['min_face_conf']}"
+        if config['min_face_width'] is not None:
+            sql_body += f"\n    AND face.width >= {config['min_face_width']}"
+        if config['min_face_height'] is not None:
+            sql_body += f"\n    AND face.height >= {config['min_face_height']}"
+        sql_body += "\nORDER BY face.confidence DESC"
+        return sql_body, []
+        
+    # If we have class filters, use the full query with attribute processing
     sql_body = """
     WITH faces_exploded AS (
         SELECT
@@ -118,9 +150,11 @@ def build_query(config, debug):
             face.width AS face_width,
             face.height AS face_height,
             face.face_attributes AS face_attributes,
-            UNNEST(face.face_attributes) AS attr
+            UNNEST(CASE 
+                WHEN face.face_attributes IS NULL THEN ARRAY[json_object('class_name', NULL, 'confidence', NULL)]
+                ELSE face.face_attributes 
+            END) AS attr
         FROM faces_exploded
-        WHERE face.face_attributes IS NOT NULL
     ),
     attrs_grouped AS (
         SELECT
@@ -133,7 +167,7 @@ def build_query(config, debug):
             attr.class_name,
             MAX(attr.confidence) as max_conf
         FROM attrs_exploded
-        WHERE attr.class_name = ANY (SELECT UNNEST($classes))
+        WHERE $classes = array[]::varchar[] OR attr.class_name = ANY (SELECT UNNEST($classes))
         GROUP BY image_id, image_url, bbox, face_conf, face_width, face_height, attr.class_name
     ),
     attrs_filtered AS (
@@ -281,7 +315,11 @@ def main():
     query_sql, query_classes = build_query(config, args.debug)
 
     print("\n✅ Running query...")
-    results_df = con.execute(query_sql, {'classes': query_classes}).fetchdf()
+    # Only pass parameters if we have class filters
+    if any([config['include_classes_AND'], config['include_classes_OR'], config['exclude_classes_AND']]):
+        results_df = con.execute(query_sql, {'classes': query_classes}).fetchdf()
+    else:
+        results_df = con.execute(query_sql).fetchdf()
 
     print(f"\n✅ Query returned {len(results_df)} faces.")
 

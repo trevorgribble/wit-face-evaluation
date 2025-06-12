@@ -73,22 +73,23 @@ python -c "import torch; print(torch.cuda.is_available())"
 mkdir -p data/raw data/processed outputs models
 ```
 
-2. Download WIT dataset files from HuggingFace:
+2. Download WIT dataset files from HuggingFace and store them (For now, just download the first 2 parquet files...but can add more later):
 ```bash
 # Using the Hugging Face CLI
-huggingface-cli download wikimedia/wit_base train-00000-of-00330.parquet --repo-type dataset --local-dir data/raw
-huggingface-cli download wikimedia/wit_base train-00001-of-00330.parquet --repo-type dataset --local-dir data/raw
+huggingface-cli download wikimedia/wit_base data/train-00000-of-00330.parquet --repo-type dataset --local-dir .
+huggingface-cli download wikimedia/wit_base data/train-00001-of-00330.parquet --repo-type dataset --local-dir .
+mv data/train* data/raw/
 ```
 
 Alternatively, you can manually download from:
-https://huggingface.co/datasets/wikimedia/wit_base
+https://huggingface.co/datasets/wikimedia/wit_base/tree/main/data
 
 Place the downloaded parquet files in the `data/raw` directory.
 
 ## Pipeline Steps
 
 ### 1. Face Detection and Attribute Analysis
-Run the evaluation script to process raw parquet files (set start_index & parquet_file_count as desired if you'd like to optimize by running multiple analysis in parallel):
+Run the evaluation script to process raw parquet files (set start_index & parquet_file_count as desired if you'd like to optimize by running multiple analysis in parallel - Note: Files will be ordered alphabetically, so ensure consistent naming structure without gaps if expanding to multiple threads):
 
 ```bash
 python evaluate_image_dataset.py \
@@ -107,7 +108,7 @@ Parameters:
 - `--debug`: Enable verbose output
 
 Note:
-- YoloV8 object detection is currently only run on all faces with min width >= 60 and min_height >= 80
+- YoloV8 object detection is currently only run on all faces with min width >= 60 and min_height >= 80 (These values can be adjusted in evaluate_image_dataset.py)
 - The pre-trained "Glasses" class from OpenImagesV7 is mapped to "Eyeglasses" per our specific assignment instructions, to disambiguate from "Sunglasses" which is also a class that will be recognized
   
 Output: 
@@ -158,11 +159,14 @@ python scripts/visualize_faces.py \
 
 ---
 
-## ✅ Example Visualization
+## ✅ Example Visualizations
 
-```markdown
-![Example Faces Visualization](outputs/visualizations/faces_conf098_w100_h100_AND_Eyeglasses_EX_Sunglasses_page_001.png)
-```
+1. Per Assignment Instructions: Only images where the faces (98%+ confidence) are at least 100px*100px in dimension and humans wearing eyesight glasses with 60% confidence AND NOT sunglasses with 20% or more confidence.
+![Example Faces Visualization](example_visualizations/faces_conf098_w100_h100_AND_Eyeglasses_EX_Sunglasses_page_001.png)
+2. Images where faces (98%+ confidence) are at least 60px*80px in dimension and humans wearing sunglasses with confidence > 20%.
+![Example Faces Visualization](example_visualizations/faces_conf098_w60_h80_AND_Sunglasses_page_001.png)
+3. Images where faces (99%+ confidence) are at least 150px*150px in dimension.
+![Example Faces Visualization](example_visualizations/faces_conf099_w150_h150_page_001.png)
 
 ---
 

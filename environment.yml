@@ -15,8 +15,6 @@ dependencies:
   - py-opencv=4.7.0
   - scikit-learn
   - networkx
-  - ultralytics
-  - facenet-pytorch
   - ffmpeg
   - pytorch=2.2.2
   - torchvision=0.17.2

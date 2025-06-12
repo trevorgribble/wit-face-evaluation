@@ -166,11 +166,14 @@ def visualize_faces(
                 axes[i].imshow(face_crop)
                 axes[i].axis('off')
 
-                # --- Robust face_attributes parsing (WORKING) ---
+                # --- Robust face_attributes parsing ---
                 face_attrs = row['face_attributes']
-
+                
+                # Handle empty/missing attributes
+                if face_attrs is None or pd.isna(face_attrs):
+                    face_attrs = []
                 # If it's a numpy array (or list) of strings, flatten and parse as JSON
-                if isinstance(face_attrs, np.ndarray) or (
+                elif isinstance(face_attrs, np.ndarray) or (
                     isinstance(face_attrs, list) and face_attrs and isinstance(face_attrs[0], str)
                 ):
                     flat_list = list(face_attrs)
@@ -178,7 +181,7 @@ def visualize_faces(
                     try:
                         face_attrs = json.loads(joined)
                     except Exception as e:
-                        if debug:
+                        if debug and any([config['include_classes_AND'], config['include_classes_OR'], config['exclude_classes_AND']]):
                             print(f"⚠️ JSON decode error (array/list): {e} on value: {joined}")
                         face_attrs = []
                 # If it's just a single string, parse JSON
@@ -186,16 +189,14 @@ def visualize_faces(
                     try:
                         face_attrs = json.loads(face_attrs)
                     except Exception as e:
-                        if debug:
+                        if debug and any([config['include_classes_AND'], config['include_classes_OR'], config['exclude_classes_AND']]):
                             print(f"⚠️ JSON decode error (string): {e} on value: {face_attrs}")
                         face_attrs = []
-                elif face_attrs is None:
-                    face_attrs = []
                 # If already a list of dicts, keep as is
                 elif isinstance(face_attrs, list):
                     pass
                 else:
-                    if debug:
+                    if debug and any([config['include_classes_AND'], config['include_classes_OR'], config['exclude_classes_AND']]):
                         print(f"⚠️ Unexpected face_attributes type: {type(face_attrs)}; value: {face_attrs}")
                     face_attrs = []
 
@@ -214,17 +215,18 @@ def visualize_faces(
                         cconf = attr.get('confidence', 0) if isinstance(attr, dict) else 0
                         if cname != '?' and cconf is not None:
                             class_lines.append(f"{cname}:{cconf:.2f}")
-                if not class_lines and debug:
+                # Only show debug messages about missing classes if we're actually filtering on classes
+                if not class_lines and debug and any([config['include_classes_AND'], config['include_classes_OR'], config['exclude_classes_AND']]):
                     print(f"⚠️ No classes found for this face. Raw face_attrs: {repr(face_attrs)}")
                 
-                classes_str = ", ".join(class_lines) if class_lines else "No classes"
-
                 # Compose caption
-                caption = (
-                    f"Face {i+1}\n"
-                    f"H:{row['face_height']} W:{row['face_width']} Conf:{row['face_conf']:.2f}\n"
-                    f"{classes_str}"
-                )
+                caption = f"Face {i+1}\nH:{row['face_height']} W:{row['face_width']} Conf:{row['face_conf']:.2f}"
+                
+                # Only add class information if we have class filters AND we have classes to show
+                if any([config['include_classes_AND'], config['include_classes_OR'], config['exclude_classes_AND']]) and class_lines:
+                    classes_str = ", ".join(class_lines)
+                    caption += f"\n{classes_str}"
+                    
                 axes[i].set_title(caption, fontsize=8)
 
             except Exception as e:
