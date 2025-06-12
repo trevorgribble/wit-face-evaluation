@@ -51,10 +51,11 @@ System Requirements:
 - At least 32GB RAM recommended
 - ~500GB free disk space for the full dataset
 
-Required System Packages (Ubuntu/Debian):
+Required Tools and Dependencies:
 
-Install the following packages required for OpenCV and image processing:
+1. Package Manager (Ubuntu/Debian):
 ```bash
+# Install required system packages for OpenCV and image processing
 sudo apt-get update
 sudo apt-get install -y \
     libgl1 \
@@ -65,17 +66,9 @@ sudo apt-get install -y \
     libpng-dev \
     libjpeg-dev
 ```
-
 For other operating systems, ensure you have the equivalent system libraries installed.
 
-### Installation Steps
-
-Choose the appropriate installation method based on your hardware:
-
-#### 🖥️ CPU-Only Installation (Default)
-Use this if you don't have a CUDA-capable GPU or want a simpler setup:
-
-1. Install Miniconda (skip if already installed):
+2. Environment Management:
 ```bash
 # Download and install Miniconda
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
@@ -86,26 +79,35 @@ source $HOME/miniconda/bin/activate
 
 # Update conda to latest version
 conda update -n base -c defaults conda -y
+```
 
-2. Clone the repository:
+### Installation Steps
+
+Choose the appropriate installation method based on your hardware:
+
+#### 🖥️ CPU-Only Installation (Default)
+Use this if you don't have a CUDA-capable GPU or want a simpler setup:
+
+
+1. Clone the repository:
 ```bash
 git clone https://github.com/trevorgribble/wit-face-evaluation.git
 cd wit-face-evaluation
 ```
 
-3. Create and activate conda environment:
+2. Create and activate conda environment:
 ```bash
 conda env create -f environment_CPU.yml
 conda activate wit-face
 ```
 
-4. Verify the installation:
+3. Verify the installation:
 ```bash
 # This should run without errors and show CPU as the device
 python -c "import torch; import facenet_pytorch; import ultralytics; print('Device:', 'cuda' if torch.cuda.is_available() else 'cpu'); print('Installation complete')"
 ```
 
-5. Optional - Test face detection (this will download MTCNN models):
+4. Optional - Test face detection (this will download MTCNN models):
 ```bash
 python -c "from facenet_pytorch import MTCNN; mtcnn = MTCNN(device='cpu'); print('MTCNN initialized successfully')"
 ```
