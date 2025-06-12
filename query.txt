@@ -19,7 +19,7 @@ min_face_width = 100
 # Minimum face height in pixels
 # If not specified, no minimum height will be applied.
 
-#min_face_height = 100
+min_face_height = 100
 
 # ============================
 # Class-based Filters (ONLY ONE of the two can be used!)
