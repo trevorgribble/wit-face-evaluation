@@ -9,7 +9,7 @@
 # Minimum face detection confidence (from MTCNN stage)
 # If not specified, no minimum confidence will be applied.
 
-min_face_conf = 0.98
+min_face_conf = 0.99
 
 # Minimum face width in pixels
 # If not specified, no minimum width will be applied.
@@ -19,7 +19,7 @@ min_face_width = 100
 # Minimum face height in pixels
 # If not specified, no minimum height will be applied.
 
-min_face_height = 100
+#min_face_height = 100
 
 # ============================
 # Class-based Filters (ONLY ONE of the two can be used!)
@@ -43,7 +43,7 @@ include_classes_AND = [('Eyeglasses', 0.6)]
 # Example:
 #include_classes_OR = [('Eyeglasses', 0.6), ('Hat', 0.3)]
 
-#include_classes_OR = [('Eyeglasses', 0.5)]
+#include_classes_OR = [('Eyeglasses', 0.6)]
 
 # ============================
 # Exclude Classes with Thresholds
@@ -54,7 +54,6 @@ include_classes_AND = [('Eyeglasses', 0.6)]
 # Example:
 # exclude_classes_AND = [('Sunglasses', 0.2)]
 
-exclude_classes_AND = [('Sunglasses', 0.2)]
 
 # ============================
 # Notes:
