@@ -48,7 +48,8 @@ wit-face-evaluation/
 System Requirements:
 - Linux/Ubuntu (recommended) or Windows/macOS
 - Python 3.8+
-- At least 8GB RAM recommended (16GB+ for processing multiple files)
+- At least 16GB RAM for processing single parquet files
+- 32GB+ RAM recommended for processing multiple files or large parquet files
 - ~2GB free disk space for basic usage with 2 parquet files
   (Note: Full WIT dataset would require ~500GB)
 
@@ -351,10 +352,14 @@ Common issues and solutions:
   3. Or switch to CPU-only mode using environment_CPU.yml
 
 ### 2. Memory Issues
-- Reduce batch size in evaluation script
+- For processing: Reduce batch size in evaluation script
+- For final save: Ensure at least 16GB RAM available for single parquet file processing
 - Process fewer parquet files at once
 - Monitor memory usage with `htop` or `free -h`
-- Consider using swap space if needed
+- If running on smaller instances (e.g., 8GB RAM):
+  - Process smaller chunks of the dataset
+  - Consider using larger swap space
+  - Use a larger instance for final parquet file creation
 
 ### 3. Missing Images
 - Verify parquet files are properly downloaded

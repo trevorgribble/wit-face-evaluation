@@ -100,9 +100,11 @@ This project implements a scalable pipeline for detecting and analyzing faces in
      query performance and reduced storage requirements.
 
 4. **Two-Stage Processing**
-   - Pros: Memory efficient, allows parallel processing
-   - Cons: Longer total processing time
+   - Pros: Memory efficient during processing, allows parallel processing
+   - Cons: Longer total processing time, high memory requirements for final parquet save
    - Decision: Scalability more important than processing speed
+   - Learning: While streaming processing is memory-efficient, final parquet file
+     creation requires significant memory (>16GB for single file processing)
 
 ### Alternative Approaches
 - Attempted custom classifier using CelebA dataset
