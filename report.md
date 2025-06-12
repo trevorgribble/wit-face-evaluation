@@ -32,6 +32,7 @@ This project implements a scalable pipeline for detecting and analyzing faces in
    - Structured parquet format for processed results
    - Maintains original image metadata
    - Optimized for fast querying
+   - Processed dataset available on HuggingFace: https://huggingface.co/datasets/bbtre/wit_faces_evaluations/tree/main
 
 ### 4. Query System Design
 - **Flexible Query Interface**
@@ -100,57 +101,23 @@ This project implements a scalable pipeline for detecting and analyzing faces in
    - Cons: Longer total processing time
    - Decision: Scalability more important than processing speed
 
-### Considered Alternatives
-1. **CelebA Dataset Training**
-   - Attempted training custom eyeglasses classifier
-   - Results weren't competitive with YOLO pre-trained model
-   - Dataset bias issues encountered
+### Alternative Approaches
+- Attempted custom classifier using CelebA dataset
+- Considered single-pass processing (rejected due to memory constraints)
 
-2. **Single-Pass Processing**
-   - Would be faster but memory intensive
-   - Problematic for large-scale deployment
+## Performance
 
-## Performance and Scalability
-
-### Current Performance
-- Processes approximately 1000 images/minute on GPU
-- Query response times < 1s for most operations
+- ~1000 images/minute processing on GPU
+- Sub-second query response times
 - Efficient memory usage through streaming
+- Parallel processing support with configurable batch sizes
 
-### Scalability Features
-- Parallel processing support
-- Batch size configuration
-- Memory-efficient data handling
-- Indexed query operations
+## Future Work
 
-## Future Improvements
-
-### Short Term
-1. Implement batch processing for YOLO inference
-2. Add more attribute classes from OpenImagesV7
-3. Optimize memory usage in visualization module
-
-### Long Term
-1. Develop custom model for fine-grained attribute detection
-2. Implement distributed processing support
-3. Add interactive query interface
-4. Explore additional datasets for training
-
-## Lessons Learned
-
-### Environment Management
-- Importance of clear, tested installation instructions
-- Value of separating CPU and GPU environments
-- Need for explicit version pinning in dependencies
-- Benefits of automated environment validation
-
-### Development Practices
-- Importance of testing on different hardware configurations
-- Value of comprehensive error handling
-- Benefits of modular design for maintainability
-- Need for clear documentation and examples
+1. Batch processing for YOLO inference
+2. Additional attribute detection
+3. Interactive query interface
+4. Distributed processing support
 
 ## Conclusions
-The implemented system successfully meets the initial requirements while providing a flexible foundation for future extensions. Special attention was paid to environment management and installation processes, ensuring that the system can be reliably deployed across different hardware configurations. The modular design allows for easy updates and improvements, while the chosen technologies (MTCNN, YOLO, DuckDB) provide a good balance of accuracy, speed, and scalability.
-
-A key success factor was the decision to separate CPU and GPU environments, which significantly improved reliability and reduced setup issues. The comprehensive documentation and validation steps ensure that users can successfully deploy the system regardless of their hardware capabilities.
+The system successfully meets requirements for face detection and attribute analysis in the WIT dataset. The chosen technologies (MTCNN, YOLO, DuckDB) provide a good balance of accuracy and performance, while the modular design allows for future improvements. Separate CPU/GPU environments ensure reliable deployment across different hardware configurations.
