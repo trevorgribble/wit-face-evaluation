@@ -3,7 +3,7 @@
 This repository implements a comprehensive pipeline for detecting, analyzing, and querying faces in the Wikimedia Image Text (WIT) dataset. The system uses MTCNN for face detection and YOLOv8x (trained specifically on
 OpenImagesV7) for additional attribute detection.
 
-While the instructions of the assignment were specific to querying for 100x100 faces with Eyeglasses, I built this tool to allow for scale for far more robust querying as desired by researchers.
+While the instructions of the assignment were specific to querying for 100x100 faces with Eyeglasses, I built this tool to be scalable and allow far more robust querying as desired by researchers.
 
 ## 📋 Table of Contents
 1. [Environment Setup](#environment-setup)
