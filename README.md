@@ -27,9 +27,10 @@ wit-face-evaluation/
 ├── query.txt                          # Dynamic query creator
 ├── query_evaluated_image_dataset.py   # Query processed parquets
 ├── visualize_faces.py                 # Output Visualization Assist Function
+├── environment_CPU.yml               # CPU-only environment file
+├── environment_GPU.yml               # GPU-enabled environment file
 ├── README.md
-├── report.md
-└── environment.yml
+└── report.md
 ```
 
 ---
