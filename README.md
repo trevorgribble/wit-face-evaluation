@@ -44,9 +44,27 @@ wit-face-evaluation/
 ## Environment Setup
 
 ### Prerequisites
+
+System Requirements:
+- Linux/Ubuntu (recommended) or Windows/macOS
 - Python 3.8+
 - At least 32GB RAM recommended
 - ~500GB free disk space for the full dataset
+
+Required System Packages (Ubuntu/Debian):
+```bash
+sudo apt-get update
+sudo apt-get install -y \
+    libgl1 \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    libpng-dev \
+    libjpeg-dev
+```
+
+For other operating systems, ensure you have the equivalent system libraries installed.
 
 ### Installation Steps
 
@@ -55,22 +73,39 @@ Choose the appropriate installation method based on your hardware:
 #### 🖥️ CPU-Only Installation (Default)
 Use this if you don't have a CUDA-capable GPU or want a simpler setup:
 
-1. Clone the repository:
+1. Install Miniconda if you haven't already:
+```bash
+# Download Miniconda installer
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
+# Install Miniconda
+bash ~/miniconda.sh -b -p $HOME/miniconda
+# Initialize conda
+source $HOME/miniconda/bin/activate
+# Update conda
+conda update -n base -c defaults conda -y
+```
+
+2. Clone the repository:
 ```bash
 git clone https://github.com/trevorgribble/wit-face-evaluation.git
 cd wit-face-evaluation
 ```
 
-2. Create and activate conda environment:
+3. Create and activate conda environment:
 ```bash
 conda env create -f environment_CPU.yml
 conda activate wit-face
 ```
 
-3. Verify the installation:
+4. Verify the installation:
 ```bash
-# This should run without errors
-python -c "import torch; import facenet_pytorch; import ultralytics; print('Installation successful!')"
+# This should run without errors and show CPU as the device
+python -c "import torch; import facenet_pytorch; import ultralytics; print('Device:', 'cuda' if torch.cuda.is_available() else 'cpu'); print('Installation successful!')"
+```
+
+5. Optional - Test face detection (this will download MTCNN models):
+```bash
+python -c "from facenet_pytorch import MTCNN; mtcnn = MTCNN(device='cpu'); print('MTCNN initialized successfully!')"
 ```
 
 #### ⚡ GPU Installation
@@ -102,8 +137,23 @@ python -c "import torch; print('GPU available:', torch.cuda.is_available()); pri
 ### Troubleshooting Installation
 
 #### Common CPU Installation Issues
-- If you get "command not found: conda", install Miniconda first
-- If pip packages fail to install, try installing them manually after environment activation
+
+System-Level Issues:
+- If you get OpenCV-related errors mentioning "libGL.so.1", install system packages:
+  ```bash
+  sudo apt-get update && sudo apt-get install -y libgl1 libglib2.0-0
+  ```
+- If you get X11-related errors, install X11 libraries:
+  ```bash
+  sudo apt-get install -y libsm6 libxext6 libxrender-dev
+  ```
+
+Conda/Python Issues:
+- If you get "command not found: conda", follow step 1 to install Miniconda first
+- If pip packages fail to install:
+  1. Make sure you're in the right environment: `conda activate wit-face`
+  2. Update pip: `pip install --upgrade pip`
+  3. Try installing packages individually: `pip install package-name`
 
 #### Common GPU Installation Issues
 - If `nvidia-smi` fails, install NVIDIA drivers first

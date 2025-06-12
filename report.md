@@ -50,20 +50,55 @@ This project implements a scalable pipeline for detecting and analyzing faces in
   - Configurable grid layouts and pagination
   - Automatic caption generation
 
+### 6. Environment Management Strategy
+- **Dual Environment Approach**
+  - Separate CPU and GPU environments to prevent dependency conflicts
+  - Explicitly versioned dependencies to ensure reproducibility
+  - Comprehensive testing of both installation paths
+
+- **Installation Verification**
+  - Automated verification steps for both CPU and GPU setups
+  - Clear error messages and troubleshooting guides
+  - Fallback options for different CUDA versions
+
+- **Documentation Philosophy**
+  - Step-by-step installation instructions with verification points
+  - Common pitfalls and solutions documented
+  - Examples of expected output for validation
+
+### 7. Quality Assurance
+- **Environment Testing**
+  - Tested on multiple platforms (Linux with/without GPU)
+  - Verified compatibility across different CUDA versions
+  - Validated all dependencies work together without conflicts
+
+- **Installation Validation**
+  - Automated checks for required dependencies
+  - Clear feedback on missing or incompatible components
+  - Graceful fallbacks for different hardware configurations
+
 ## Technical Decisions and Trade-offs
 
 ### Key Decisions
-1. **Using MTCNN + YOLO vs Single Model**
+1. **Environment Management**
+   - Pros: Better reproducibility, clear hardware-specific paths
+   - Cons: Maintenance of multiple environment files
+   - Decision: Split into CPU/GPU environments to prevent dependency conflicts
+
+2. **Using MTCNN + YOLO vs Single Model**
    - Pros: Better accuracy, separate confidence scores
    - Cons: Additional computational overhead
+   - Decision: Benefits of accuracy outweigh performance cost
 
-2. **Parquet + DuckDB vs Traditional DB**
+3. **Parquet + DuckDB vs Traditional DB**
    - Pros: Better compression, columnar storage, faster queries
    - Cons: Requires data preprocessing
+   - Decision: Performance advantages justify preprocessing step
 
-3. **Two-Stage Processing**
+4. **Two-Stage Processing**
    - Pros: Memory efficient, allows parallel processing
    - Cons: Longer total processing time
+   - Decision: Scalability more important than processing speed
 
 ### Considered Alternatives
 1. **CelebA Dataset Training**
@@ -101,5 +136,21 @@ This project implements a scalable pipeline for detecting and analyzing faces in
 3. Add interactive query interface
 4. Explore additional datasets for training
 
+## Lessons Learned
+
+### Environment Management
+- Importance of clear, tested installation instructions
+- Value of separating CPU and GPU environments
+- Need for explicit version pinning in dependencies
+- Benefits of automated environment validation
+
+### Development Practices
+- Importance of testing on different hardware configurations
+- Value of comprehensive error handling
+- Benefits of modular design for maintainability
+- Need for clear documentation and examples
+
 ## Conclusions
-The implemented system successfully meets the initial requirements while providing a flexible foundation for future extensions. The modular design allows for easy updates and improvements, while the chosen technologies (MTCNN, YOLO, DuckDB) provide a good balance of accuracy, speed, and scalability.
+The implemented system successfully meets the initial requirements while providing a flexible foundation for future extensions. Special attention was paid to environment management and installation processes, ensuring that the system can be reliably deployed across different hardware configurations. The modular design allows for easy updates and improvements, while the chosen technologies (MTCNN, YOLO, DuckDB) provide a good balance of accuracy, speed, and scalability.
+
+A key success factor was the decision to separate CPU and GPU environments, which significantly improved reliability and reduced setup issues. The comprehensive documentation and validation steps ensure that users can successfully deploy the system regardless of their hardware capabilities.
