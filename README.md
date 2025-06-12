@@ -52,16 +52,25 @@ System Requirements:
 - ~500GB free disk space for the full dataset
 
 Required System Packages (Ubuntu/Debian):
+
+1. First, check which packages need to be installed:
 ```bash
-sudo apt-get update
-sudo apt-get install -y \
-    libgl1 \
-    libglib2.0-0 \
-    libsm6 \
-    libxext6 \
-    libxrender-dev \
-    libpng-dev \
-    libjpeg-dev
+# Create a list of missing packages
+missing_packages=""
+for pkg in libgl1 libglib2.0-0 libsm6 libxext6 libxrender-dev libpng-dev libjpeg-dev; do
+    if ! dpkg -l | grep -q "^ii  $pkg "; then
+        missing_packages="$missing_packages $pkg"
+    fi
+done
+
+# If any packages are missing, install them
+if [ ! -z "$missing_packages" ]; then
+    echo "Installing missing packages:$missing_packages"
+    sudo apt-get update
+    sudo apt-get install -y $missing_packages
+else
+    echo "All required system packages are already installed!"
+fi
 ```
 
 For other operating systems, ensure you have the equivalent system libraries installed.
@@ -73,17 +82,24 @@ Choose the appropriate installation method based on your hardware:
 #### 🖥️ CPU-Only Installation (Default)
 Use this if you don't have a CUDA-capable GPU or want a simpler setup:
 
-1. Install Miniconda if you haven't already:
+1. Check if Miniconda/Anaconda is installed and install if needed:
 ```bash
-# Download Miniconda installer
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
-# Install Miniconda
-bash ~/miniconda.sh -b -p $HOME/miniconda
-# Initialize conda
-source $HOME/miniconda/bin/activate
-# Update conda
-conda update -n base -c defaults conda -y
-```
+# Check if conda is available
+if ! command -v conda &> /dev/null; then
+    echo "Conda not found. Installing Miniconda..."
+    # Download Miniconda installer
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
+    # Install Miniconda
+    bash ~/miniconda.sh -b -p $HOME/miniconda
+    # Initialize conda
+    source $HOME/miniconda/bin/activate
+    # Update conda
+    conda update -n base -c defaults conda -y
+else
+    echo "Conda is already installed!"
+    # Optional: Update existing conda
+    conda update -n base -c defaults conda -y
+fi
 
 2. Clone the repository:
 ```bash
@@ -100,12 +116,12 @@ conda activate wit-face
 4. Verify the installation:
 ```bash
 # This should run without errors and show CPU as the device
-python -c "import torch; import facenet_pytorch; import ultralytics; print('Device:', 'cuda' if torch.cuda.is_available() else 'cpu'); print('Installation successful!')"
+python -c "import torch; import facenet_pytorch; import ultralytics; print('Device:', 'cuda' if torch.cuda.is_available() else 'cpu'); print('Installation complete')"
 ```
 
 5. Optional - Test face detection (this will download MTCNN models):
 ```bash
-python -c "from facenet_pytorch import MTCNN; mtcnn = MTCNN(device='cpu'); print('MTCNN initialized successfully!')"
+python -c "from facenet_pytorch import MTCNN; mtcnn = MTCNN(device='cpu'); print('MTCNN initialized successfully')"
 ```
 
 #### ⚡ GPU Installation
@@ -130,7 +146,7 @@ conda activate wit-face
 
 4. Verify GPU support:
 ```bash
-# This should print "GPU available: True" and show your GPU device
+# This should print GPU availability and show your GPU device
 python -c "import torch; print('GPU available:', torch.cuda.is_available()); print('Device:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU')"
 ```
 
