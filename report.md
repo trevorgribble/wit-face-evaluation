@@ -95,6 +95,9 @@ This project implements a scalable pipeline for detecting and analyzing faces in
    - Pros: Better compression, columnar storage, faster queries
    - Cons: Requires data preprocessing
    - Decision: Performance advantages justify preprocessing step
+   - Learning: Proved to be an excellent choice for data scientists, offering SQL familiarity
+     with modern data processing capabilities. The columnar format significantly improved
+     query performance and reduced storage requirements.
 
 4. **Two-Stage Processing**
    - Pros: Memory efficient, allows parallel processing
@@ -118,6 +121,11 @@ This project implements a scalable pipeline for detecting and analyzing faces in
 2. Additional attribute detection
 3. Interactive query interface
 4. Distributed processing support
+5. **Query System Optimization**
+   - Deeper exploration of DuckDB's advanced features
+   - Performance optimization through improved indexing strategies
+   - More sophisticated query patterns based on growing experience with columnar databases
+   - Better utilization of Parquet's partitioning capabilities
 
 ## Conclusions
 The system successfully meets requirements for face detection and attribute analysis in the WIT dataset. The chosen technologies (MTCNN, YOLO, DuckDB) provide a good balance of accuracy and performance, while the modular design allows for future improvements. Separate CPU/GPU environments ensure reliable deployment across different hardware configurations.
