@@ -48,8 +48,9 @@ wit-face-evaluation/
 System Requirements:
 - Linux/Ubuntu (recommended) or Windows/macOS
 - Python 3.8+
-- At least 32GB RAM recommended
-- ~500GB free disk space for the full dataset
+- At least 8GB RAM recommended (16GB+ for processing multiple files)
+- ~2GB free disk space for basic usage with 2 parquet files
+  (Note: Full WIT dataset would require ~500GB)
 
 Required Tools and Dependencies:
 
