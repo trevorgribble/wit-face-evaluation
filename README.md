@@ -38,9 +38,9 @@ wit-face-evaluation/
 
 ### Prerequisites
 - Python 3.8+
-- CUDA-compatible GPU (recommended) with CUDA 11.7+ and cuDNN installed
 - At least 32GB RAM recommended
 - ~500GB free disk space for the full dataset
+- (Optional) CUDA-compatible GPU for faster processing
 
 ### Installation Steps
 
@@ -56,13 +56,32 @@ conda env create -f environment.yml
 conda activate wit-face
 ```
 
-### CUDA Compatibility Notes
-- If using GPU, ensure your CUDA drivers are properly installed
-- Verify CUDA compatibility:
+### ⚡️ Optional: Enable GPU Support
+
+By default, this environment installs the CPU-only version of PyTorch, which works everywhere. If you have an NVIDIA GPU and want to enable GPU acceleration:
+
+1. Check your CUDA driver version:
 ```bash
-python -c "import torch; print(torch.cuda.is_available())"
+nvidia-smi
 ```
-- If CUDA issues arise, install the appropriate PyTorch version for your CUDA version from [PyTorch's website](https://pytorch.org/get-started/locally/)
+
+2. After activating the environment, install CUDA support matching your driver version:
+```bash
+# For CUDA 12.1:
+conda install pytorch-cuda=12.1 -c pytorch -c nvidia
+# For CUDA 11.8:
+conda install pytorch-cuda=11.8 -c pytorch -c nvidia
+```
+
+3. Verify GPU support is enabled:
+```bash
+python -c "import torch; print('GPU available:', torch.cuda.is_available())"
+```
+
+### Troubleshooting CUDA Setup
+- If you encounter CUDA errors, ensure your CUDA drivers are properly installed
+- The specific pytorch-cuda version must match your system's CUDA driver version
+- For detailed PyTorch+CUDA installation options, visit [PyTorch's Get Started page](https://pytorch.org/get-started/locally/)
 
 ---
 
