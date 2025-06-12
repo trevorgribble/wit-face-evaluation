@@ -76,8 +76,9 @@ mkdir -p data/raw data/processed outputs models
 2. Download WIT dataset files from HuggingFace:
 ```bash
 # Using the Hugging Face CLI
-huggingface-cli download wikimedia/wit_base train-00000-of-00330.parquet --repo-type dataset --local-dir data/raw
-huggingface-cli download wikimedia/wit_base train-00001-of-00330.parquet --repo-type dataset --local-dir data/raw
+huggingface-cli download wikimedia/wit_base data/train-00000-of-00330.parquet --repo-type dataset --local-dir data/raw
+huggingface-cli download wikimedia/wit_base data/train-00001-of-00330.parquet --repo-type dataset --local-dir data/raw
+
 ```
 
 Alternatively, you can manually download from:
