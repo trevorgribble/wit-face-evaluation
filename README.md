@@ -40,9 +40,13 @@ wit-face-evaluation/
 - Python 3.8+
 - At least 32GB RAM recommended
 - ~500GB free disk space for the full dataset
-- (Optional) CUDA-compatible GPU for faster processing
 
 ### Installation Steps
+
+Choose the appropriate installation method based on your hardware:
+
+#### 🖥️ CPU-Only Installation (Default)
+Use this if you don't have a CUDA-capable GPU or want a simpler setup:
 
 1. Clone the repository:
 ```bash
@@ -52,36 +56,57 @@ cd wit-face-evaluation
 
 2. Create and activate conda environment:
 ```bash
-conda env create -f environment.yml
+conda env create -f environment_CPU.yml
 conda activate wit-face
 ```
 
-### ⚡️ Optional: Enable GPU Support
+3. Verify the installation:
+```bash
+# This should run without errors
+python -c "import torch; import facenet_pytorch; import ultralytics; print('Installation successful!')"
+```
 
-By default, this environment installs the CPU-only version of PyTorch, which works everywhere. If you have an NVIDIA GPU and want to enable GPU acceleration:
+#### ⚡ GPU Installation
+Use this if you have a CUDA-capable NVIDIA GPU:
 
-1. Check your CUDA driver version:
+1. First, verify your CUDA availability and version:
 ```bash
 nvidia-smi
 ```
 
-2. After activating the environment, install CUDA support matching your driver version:
+2. Clone the repository:
 ```bash
-# For CUDA 12.1:
-conda install pytorch-cuda=12.1 -c pytorch -c nvidia
-# For CUDA 11.8:
-conda install pytorch-cuda=11.8 -c pytorch -c nvidia
+git clone https://github.com/trevorgribble/wit-face-evaluation.git
+cd wit-face-evaluation
 ```
 
-3. Verify GPU support is enabled:
+3. Create and activate conda environment with GPU support:
 ```bash
-python -c "import torch; print('GPU available:', torch.cuda.is_available())"
+conda env create -f environment_GPU.yml
+conda activate wit-face
 ```
 
-### Troubleshooting CUDA Setup
-- If you encounter CUDA errors, ensure your CUDA drivers are properly installed
-- The specific pytorch-cuda version must match your system's CUDA driver version
-- For detailed PyTorch+CUDA installation options, visit [PyTorch's Get Started page](https://pytorch.org/get-started/locally/)
+4. Verify GPU support:
+```bash
+# This should print "GPU available: True" and show your GPU device
+python -c "import torch; print('GPU available:', torch.cuda.is_available()); print('Device:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU')"
+```
+
+### Troubleshooting Installation
+
+#### Common CPU Installation Issues
+- If you get "command not found: conda", install Miniconda first
+- If pip packages fail to install, try installing them manually after environment activation
+
+#### Common GPU Installation Issues
+- If `nvidia-smi` fails, install NVIDIA drivers first
+- If you get CUDA version mismatch errors:
+  1. Note your NVIDIA driver version from `nvidia-smi`
+  2. Delete the environment: `conda env remove -n wit-face`
+  3. Edit environment_GPU.yml to match your CUDA version (e.g., change pytorch-cuda=12.1 to pytorch-cuda=11.8)
+  4. Recreate the environment
+
+For more detailed PyTorch+CUDA options, visit [PyTorch's Get Started page](https://pytorch.org/get-started/locally/)
 
 ---
 
